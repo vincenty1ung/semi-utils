@@ -33,6 +33,8 @@ class ExifId(Enum):
     EXPOSURE_TIME = 'ExposureTime'
     SHUTTER_SPEED_VALUE = 'ShutterSpeedValue'
     ORIENTATION = 'Orientation'
+    EXPOSURE_PROGRAM = 'ExposureProgram'
+    METERING_MODE = 'MeteringMode'
 
 
 PATTERN = re.compile(r"(\d+)\.")  # 匹配小数
@@ -162,6 +164,10 @@ class ImageContainer(object):
 
     def get_img(self):
         return self.img
+    def get_create_data(self):
+        return self._param_dict[DATETIME_FILENAME_VALUE]
+    def get_right_me(self):
+        return "Exposure Program : {} , Metering Mode : {} ".format(extract_attribute(self.exif, ExifId.EXPOSURE_PROGRAM.value) , extract_attribute(self.exif, ExifId.METERING_MODE.value))
 
     def _parse_datetime(self) -> str:
         """

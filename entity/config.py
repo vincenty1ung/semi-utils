@@ -119,9 +119,13 @@ class Config(object):
 
     def get_font(self):
         return ImageFont.truetype(self._data['base']['font'], self.get_font_size())
+    def get_font_set_size(self,size=100):
+        return ImageFont.truetype(self._data['base']['font'], size)
 
     def get_bold_font(self):
         return ImageFont.truetype(self._data['base']['bold_font'], self.get_bold_font_size())
+    def get_artist_info(self):
+        return self._data['base']['artist']
 
     def get_font_size(self):
         font_size = self._data['base']['font_size']

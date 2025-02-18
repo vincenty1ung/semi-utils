@@ -68,7 +68,7 @@ def processing():
 
     # 如果需要添加白边，且是水印布局，则添加白边处理器，白边处理器优先级最低
     if config.has_white_margin_enabled() and 'watermark' in config.get_layout_type():
-        processor_chain.add(MARGIN_PROCESSOR)
+        processor_chain.add(MARGIN_PROCESSOR) #+
 
     # 如果需要按原有比例填充，且不是正方形布局，则添加填充处理器
     if config.has_padding_with_original_ratio_enabled() and 'square' != config.get_layout_type():

@@ -1,12 +1,13 @@
 base:
   alternative_bold_font: ./fonts/Roboto-Medium.ttf
   alternative_font: ./fonts/Roboto-Regular.ttf
+  artist: "xxx"
   bold_font: ./fonts/AlibabaPuHuiTi-2-85-Bold.otf
   bold_font_size: 1
   font: ./fonts/AlibabaPuHuiTi-2-45-Light.otf
   font_size: 1
-  input_dir: ./input
-  output_dir: ./output
+  input_dir: "/Users/xxx/Pictures/\u5F85\u5904\u7406/Input"
+  output_dir: "/Users/xxx/Pictures/\u5F85\u5904\u7406/Output"
   quality: 100
 global:
   focal_length:
@@ -17,7 +18,7 @@ global:
     enable: false
   white_margin:
     enable: true
-    width: 3
+    width: 1
 layout:
   background_color: '#ffffff'
   elements:
@@ -32,7 +33,7 @@ layout:
     right_bottom:
       color: '#757575'
       is_bold: false
-      name: Datetime
+      name: GeoInfo
       value: Photo by NONE
     right_top:
       color: '#212121'

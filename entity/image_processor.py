@@ -1,4 +1,6 @@
 import string
+from datetime import datetime
+
 
 from PIL import Image
 from PIL import ImageFilter
@@ -141,6 +143,19 @@ class WatermarkProcessor(ProcessorComponent):
         watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), NORMAL_HEIGHT), color=self.bg_color)
 
         with Image.new('RGBA', (10, 100), color=self.bg_color) as empty_padding:
+            # 增加版权信息 ==》© 2023 xx PHOTOGRAPHY - All rights reserved
+            photography_str =  "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year , config.get_artist_info())
+            photography_img = text_to_image(photography_str,
+                                            config.get_font_set_size(100),
+                                            config.get_bold_font(),
+                                            is_bold=False,
+                                            fill=self.font_color_lb)
+            # 增加曝光模式、测光模式
+            bottom2 = text_to_image(container.get_right_me(),
+                                          config.get_font_set_size(100),
+                                          config.get_bold_font(),
+                                          is_bold=self.bold_font_rb,
+                                          fill=self.font_color_rb)
             # 填充左边的文字内容
             left_top = text_to_image(container.get_attribute_str(config.get_left_top()),
                                      config.get_font(),
@@ -153,6 +168,7 @@ class WatermarkProcessor(ProcessorComponent):
                                         is_bold=self.bold_font_lb,
                                         fill=self.font_color_lb)
             left = concatenate_image([left_top, empty_padding, left_bottom])
+            left = concatenate_image([left,empty_padding,photography_img],"left")
             # 填充右边的文字内容
             right_top = text_to_image(container.get_attribute_str(config.get_right_top()),
                                       config.get_font(),
@@ -165,6 +181,7 @@ class WatermarkProcessor(ProcessorComponent):
                                          is_bold=self.bold_font_rb,
                                          fill=self.font_color_rb)
             right = concatenate_image([right_top, empty_padding, right_bottom])
+            right = concatenate_image([right,empty_padding,bottom2],"left")
 
         # 将左右两边的文字内容等比例缩放到相同的高度
         max_height = max(left.height, right.height)
@@ -174,6 +191,20 @@ class WatermarkProcessor(ProcessorComponent):
 
         logo = config.load_logo(container.make)
         if self.logo_enable:
+            art_line = text_to_image("ART.VINCENT",
+                                     config.get_font_set_size(200),
+                                     config.get_bold_font(),
+                                     is_bold=False,
+                                     fill=self.font_color_lb)
+            #art_line = padding_image(art_line, int(padding_ratio * logo.height))
+            #© 2023 Vincent PHOTOGRAPHY - All rights reserved
+            # photography_str =  "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year , "Vincent Yeung")
+            # photography_img = text_to_image(photography_str,
+            #                          config.get_font_set_size(100),
+            #                          config.get_bold_font(),
+            #                          is_bold=False,
+            #                          fill=self.font_color_lb)
+            # logo = concatenate_image([logo, empty_padding, photography_img],'left')
             if self.is_logo_left():
                 # 如果 logo 在左边
                 line = LINE_TRANSPARENT.copy()
