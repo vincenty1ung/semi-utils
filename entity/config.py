@@ -123,14 +123,15 @@ class Config(object):
         return ImageFont.truetype(self._data['base']['font'], size)
 
     def get_bold_font(self):
-        return ImageFont.truetype(self._data['base']['bold_font'], self.get_bold_font_size())
+        # return ImageFont.truetype(self._data['base']['bold_font'], self.get_bold_font_size())
+        return ImageFont.truetype(self._data['base']['bold_font'], 100)
     def get_artist_info(self):
         return self._data['base']['artist']
 
     def get_font_size(self):
         font_size = self._data['base']['font_size']
         if font_size == 1:
-            return 240
+            return 150
         elif font_size == 2:
             return 250
         elif font_size == 3:

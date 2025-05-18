@@ -1,13 +1,13 @@
 base:
   alternative_bold_font: ./fonts/Roboto-Medium.ttf
   alternative_font: ./fonts/Roboto-Regular.ttf
-  artist: "xxx"
+  artist: Vincent Ch1n
   bold_font: ./fonts/AlibabaPuHuiTi-2-85-Bold.otf
   bold_font_size: 1
   font: ./fonts/AlibabaPuHuiTi-2-45-Light.otf
   font_size: 1
-  input_dir: "/Users/xxx/Pictures/\u5F85\u5904\u7406/Input"
-  output_dir: "/Users/xxx/Pictures/\u5F85\u5904\u7406/Output"
+  input_dir: "/Users/vincent/Pictures/\u5F85\u5904\u7406/Input"
+  output_dir: "/Users/vincent/Pictures/\u5F85\u5904\u7406/Output"
   quality: 100
 global:
   focal_length:
@@ -25,67 +25,67 @@ layout:
     left_bottom:
       color: '#757575'
       is_bold: false
-      name: Model
+      name: Param
     left_top:
-      color: '#212121'
-      is_bold: true
-      name: LensModel
+      color: '#757575'
+      is_bold: false
+      name: LensMake_LensModel
     right_bottom:
       color: '#757575'
       is_bold: false
-      name: GeoInfo
-      value: Photo by NONE
+      name: Custom
+      value: Vincent Ch1n
     right_top:
-      color: '#212121'
-      is_bold: true
-      name: Param
-  logo_enable: false
+      color: '#757575'
+      is_bold: false
+      name: GeoInfo
+  logo_enable: true
   logo_position: left
   type: watermark_right_logo
 logo:
   default:
     id: ''
-    path: ./logos/empty.png
+    path: ./logos/icon.png
   makes:
     apple:
       id: APPLE
-      path: ./logos/apple.png
+      path: ./logos/icon.png
     canon:
       id: Canon
-      path: ./logos/canon.png
+      path: ./logos/icon.png
     dji:
       id: DJI
-      path: ./logos/DJI.jpg
+      path: ./logos/icon.jpg
     empty:
       id: "\u7A7A"
-      path: ./logos/empty.png
+      path: ./logos/icon.png
     fujifilm:
       id: FUJIFILM
-      path: ./logos/fujifilm.png
+      path: ./logos/icon.png
     hasselblad:
       id: HASSELBLAD
-      path: ./logos/hasselblad.png
+      path: ./logos/icon.png
     huawei:
       id: HUAWEI
-      path: ./logos/xmage.png
+      path: ./logos/icon.png
     leica:
       id: leica
-      path: ./logos/leica_logo.png
+      path: ./logos/icon.png
     nikon:
       id: NIKON
-      path: ./logos/nikon.png
+      path: ./logos/icon.png
     olympus:
       id: Olympus
-      path: ./logos/olympus_blue_gold.png
+      path: ./logos/icon.png
     panasonic:
       id: Panasonic
-      path: ./logos/panasonic.png
+      path: ./logos/icon.png
     pentax:
       id: PENTAX
-      path: ./logos/pentax.png
+      path: ./logos/icon.png
     ricoh:
       id: RICOH
-      path: ./logos/ricoh.png
+      path: ./logos/icon.png
     sony:
       id: SONY
-      path: ./logos/sony.png
+      path: ./logos/icon.png

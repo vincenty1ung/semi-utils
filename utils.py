@@ -257,7 +257,7 @@ def resize_image_with_width(image, width, auto_close=True):
     return resized_image
 
 
-def append_image_by_side(background, images, side='left', padding=200, is_start=False):
+def  append_image_by_side(background, images, side='left', padding=200, is_start=False):
     """
     将图片横向拼接到背景图片中
     :param background: 背景图片对象

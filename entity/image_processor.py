@@ -1,7 +1,6 @@
 import string
 from datetime import datetime
 
-
 from PIL import Image
 from PIL import ImageFilter
 from PIL import ImageOps
@@ -113,14 +112,18 @@ class WatermarkProcessor(ProcessorComponent):
         self.logo_enable = True
         self.bg_color = '#ffffff'
         self.line_color = GRAY
-        self.font_color_lt = '#212121'
-        self.bold_font_lt = True
-        self.font_color_lb = '#424242'
-        self.bold_font_lb = False
-        self.font_color_rt = '#212121'
-        self.bold_font_rt = True
-        self.font_color_rb = '#424242'
-        self.bold_font_rb = False
+        # self.font_color_lt = '#212121'
+        # self.font_color_lt = '#606060'
+        # self.font_color_lt = '#424242'
+        self.font_color_lt = '#424242'
+        self.bold_font_lt = False
+        self.font_color_lb = '#212121'
+        self.bold_font_lb = True
+        # self.font_color_rt = '#212121'
+        self.font_color_rt = '#424242'
+        self.bold_font_rt = False
+        self.font_color_rb = '#212121'
+        self.bold_font_rb = True
 
     def is_logo_left(self):
         return self.logo_position == 'left'
@@ -138,50 +141,64 @@ class WatermarkProcessor(ProcessorComponent):
         ratio = (.04 if container.get_ratio() >= 1 else .09) + 0.02 * config.get_font_padding_level()
         # 水印中上下边缘空白部分的占比
         padding_ratio = (.52 if container.get_ratio() >= 1 else .7) - 0.04 * config.get_font_padding_level()
+        # padding_ratio = (.62 if container.get_ratio() >= 1 else .7) - 0.04 * config.get_font_padding_level()
 
         # 创建一个空白的水印图片
-        watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), NORMAL_HEIGHT), color=self.bg_color)
+        # watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), NORMAL_HEIGHT), color=self.bg_color)
+        watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), NORMAL_HEIGHT), color=TRANSPARENT)
 
-        with Image.new('RGBA', (10, 100), color=self.bg_color) as empty_padding:
+        # with Image.new('RGBA', (10, 100), color=self.bg_color) as empty_padding:
+        with Image.new('RGBA', (10, 100), color=TRANSPARENT) as empty_padding:
             # 增加版权信息 ==》© 2023 xx PHOTOGRAPHY - All rights reserved
-            photography_str =  "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year , config.get_artist_info())
+            photography_str = "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year,
+                                                                                 config.get_artist_info())
             photography_img = text_to_image(photography_str,
-                                            config.get_font_set_size(100),
+                                            config.get_font_set_size(150),
                                             config.get_bold_font(),
                                             is_bold=False,
                                             fill=self.font_color_lb)
             # 增加曝光模式、测光模式
             bottom2 = text_to_image(container.get_right_me(),
-                                          config.get_font_set_size(100),
-                                          config.get_bold_font(),
-                                          is_bold=self.bold_font_rb,
-                                          fill=self.font_color_rb)
+                                    config.get_font_set_size(150),
+                                    config.get_bold_font(),
+                                    is_bold=self.bold_font_rb,
+                                    fill=self.font_color_rb)
             # 填充左边的文字内容
             left_top = text_to_image(container.get_attribute_str(config.get_left_top()),
                                      config.get_font(),
                                      config.get_bold_font(),
                                      is_bold=self.bold_font_lt,
                                      fill=self.font_color_lt)
-            left_bottom = text_to_image(container.get_attribute_str(config.get_left_bottom()),
+            # left_bottom_str = "{} , {} , {}".format(container._parse_date(),container.get_attribute_str(config.get_left_bottom()),
+            #                                    container.get_right_me())
+            left_bottom_str = "{} , {}".format(container.get_attribute_str(config.get_left_bottom()),
+                                               container.get_right_me())
+            left_bottom = text_to_image(left_bottom_str,
                                         config.get_font(),
                                         config.get_bold_font(),
                                         is_bold=self.bold_font_lb,
                                         fill=self.font_color_lb)
             left = concatenate_image([left_top, empty_padding, left_bottom])
-            left = concatenate_image([left,empty_padding,photography_img],"left")
+            # left = concatenate_image([left,empty_padding,p hotography_img],"left")
+            left = concatenate_image([left, empty_padding], "left")
             # 填充右边的文字内容
-            right_top = text_to_image(container.get_attribute_str(config.get_right_top()),
+            right_top_str = "{}  {} ".format(container.get_attribute_str(config.get_right_top()),container._parse_date())
+            right_top = text_to_image(right_top_str,
                                       config.get_font(),
                                       config.get_bold_font(),
                                       is_bold=self.bold_font_rt,
                                       fill=self.font_color_rt)
-            right_bottom = text_to_image(container.get_attribute_str(config.get_right_bottom()),
+            right_bottom_photography_str = "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year,
+                                                                                              container.get_attribute_str(
+                                                                                                  config.get_right_bottom()))
+            right_bottom = text_to_image(right_bottom_photography_str,
                                          config.get_font(),
                                          config.get_bold_font(),
                                          is_bold=self.bold_font_rb,
                                          fill=self.font_color_rb)
             right = concatenate_image([right_top, empty_padding, right_bottom])
-            right = concatenate_image([right,empty_padding,bottom2],"left")
+            # right = concatenate_image([right,empty_padding,bottom2],"left")
+            right = concatenate_image([right, empty_padding], "left")
 
         # 将左右两边的文字内容等比例缩放到相同的高度
         max_height = max(left.height, right.height)
@@ -196,8 +213,8 @@ class WatermarkProcessor(ProcessorComponent):
                                      config.get_bold_font(),
                                      is_bold=False,
                                      fill=self.font_color_lb)
-            #art_line = padding_image(art_line, int(padding_ratio * logo.height))
-            #© 2023 Vincent PHOTOGRAPHY - All rights reserved
+            # art_line = padding_image(art_line, int(padding_ratio * logo.height))
+            # © 2023 Vincent PHOTOGRAPHY - All rights reserved
             # photography_str =  "© {} {} PHOTOGRAPHY - All rights reserved".format(datetime.now().year , "Vincent Yeung")
             # photography_img = text_to_image(photography_str,
             #                          config.get_font_set_size(100),
@@ -224,23 +241,36 @@ class WatermarkProcessor(ProcessorComponent):
                 append_image_by_side(watermark, [logo, line, right], side='right')
                 line.close()
         else:
-            append_image_by_side(watermark, [left], is_start=True)
-            append_image_by_side(watermark, [right], side='right')
+            line = padding_image(LINE_GRAY, int(padding_ratio * LINE_GRAY.height * .8), padding_location='tb')
+            append_image_by_side(watermark, [left], padding=200, is_start=True)
+            append_image_by_side(watermark, [line, right], padding=200, side='right')
+            line.close()
         left.close()
         right.close()
 
         # 缩放水印的大小
+        # watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), 100), color=self.bg_color)
         watermark = resize_image_with_width(watermark, container.get_width())
         # 将水印图片放置在原始图片的下方
         bg = ImageOps.expand(container.get_watermark_img().convert('RGBA'),
                              border=(0, 0, 0, watermark.height),
                              fill=self.bg_color)
         fg = ImageOps.expand(watermark, border=(0, container.get_height(), 0, 0), fill=TRANSPARENT)
+        # bg = ImageOps.expand(container.get_watermark_img().convert('RGBA'),
+        #                      border=(0, 0, 0, 0),
+        #                      fill=self.bg_color)
+        # fg = ImageOps.expand(watermark, border=(0, bg.height-watermark.height, 0, 0), fill=TRANSPARENT)
         result = Image.alpha_composite(bg, fg)
         watermark.close()
         # 更新图片对象
         result = ImageOps.exif_transpose(result).convert('RGB')
         container.update_watermark_img(result)
+
+        # config = self.config
+        # padding_size = int(config.get_white_margin_width() * min(container.get_width(), container.get_height()) / 100)
+        # padding_img = padding_image(container.get_watermark_img(), padding_size, 'b', color=config.bg_color)
+        # container.update_watermark_img(padding_img)
+        # container.update_watermark_img(result)
 
 
 class WatermarkRightLogoProcessor(WatermarkProcessor):
